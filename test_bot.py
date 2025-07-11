@@ -10,7 +10,7 @@ import json
 import logging
 from datetime import datetime
 import pytz
-
+class NewsBotTester:
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
