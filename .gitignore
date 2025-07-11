@@ -1,0 +1,228 @@
+# Comprehensive Security .gitignore for Chhattisgarh News Bot
+# This file prevents ANY sensitive data from being committed to GitHub
+
+# ============================================================================
+# API KEYS AND CREDENTIALS - NEVER COMMIT THESE
+# ============================================================================
+
+# Grok AI API Keys
+*grok*key*
+*xai*key*
+xai-*
+*GROK_API_KEY*
+
+# Telegram Bot Tokens
+*bot*token*
+*telegram*token*
+*TELEGRAM_TOKEN*
+*BOT_TOKEN*
+
+# All API Keys (generic patterns)
+*api*key*
+*API_KEY*
+*secret*
+*SECRET*
+*token*
+*TOKEN*
+*password*
+*PASSWORD*
+*credential*
+*CREDENTIAL*
+
+# ============================================================================
+# ENVIRONMENT AND CONFIGURATION FILES
+# ============================================================================
+
+# Environment files
+.env
+.env.*
+*.env
+env.py
+config.py
+settings.py
+credentials.py
+secrets.py
+
+# Configuration directories
+config/
+credentials/
+secrets/
+keys/
+
+# ============================================================================
+# DEPLOYMENT AND RUNTIME FILES
+# ============================================================================
+
+# Python cache and runtime
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+.env/
+
+# ============================================================================
+# LOGS AND TEMPORARY FILES
+# ============================================================================
+
+# Log files
+*.log
+logs/
+*.log.*
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================================================
+# IDE AND EDITOR FILES
+# ============================================================================
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ============================================================================
+# SECURITY AND BACKUP FILES
+# ============================================================================
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Security scan results
+security-scan.*
+vulnerability-report.*
+
+# SSL certificates and keys
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+
+# ============================================================================
+# PROJECT SPECIFIC EXCLUSIONS
+# ============================================================================
+
+# News data (if sensitive)
+news_data/
+archived_news/
+user_data/
+
+# Test data with real credentials
+test_with_real_keys.py
+production_test.py
+
+# Deployment scripts with embedded credentials
+deploy_with_keys.py
+setup_with_credentials.py
+
+# ============================================================================
+# ADDITIONAL SECURITY PATTERNS
+# ============================================================================
+
+# Any file containing "key", "token", "secret", "password"
+*key*
+*token*
+*secret*
+*password*
+*credential*
+
+# Specific patterns for this project
+*chhattisgarh*key*
+*news*bot*key*
+*grok*credential*
+*telegram*credential*
+
+# Heroku and deployment configs with secrets
+Procfile.local
+runtime.txt.local
+requirements.txt.local
+
+# Database files (if they contain sensitive data)
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================================
+# WHITELIST EXCEPTIONS (files that should be tracked despite patterns above)
+# ============================================================================
+
+# None currently - all security-related files should be excluded
+
+# ============================================================================
+# NOTES FOR DEVELOPERS
+# ============================================================================
+
+# This .gitignore is designed to prevent ANY sensitive data from being
+# committed to the repository. If you need to add a file that matches
+# these patterns but is safe to commit, please review carefully and
+# consider if it truly contains no sensitive information.
+#
+# For configuration, use environment variables or secure secret management
+# systems instead of committing configuration files.
+#
+# Remember: Once something is committed to Git, it exists in the history
+# even if later removed. Prevention is better than cleanup.
