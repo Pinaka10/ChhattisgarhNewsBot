@@ -1,0 +1,40 @@
+{
+  "name": "chhattisgarh-news-bot",
+  "description": "Automated Chhattisgarh Hindi News Bot with WhatsApp/Telegram delivery",
+  "repository": "https://github.com/Pinaka10/ChhattisgarhNewsBot",
+  "keywords": ["python", "news", "telegram", "whatsapp", "hindi", "chhattisgarh"],
+  "env": {
+    "TELEGRAM_TOKEN": {
+      "description": "Telegram Bot Token from BotFather",
+      "required": true
+    },
+    "TELEGRAM_CHAT_ID": {
+      "description": "Telegram Chat ID for delivery",
+      "required": true
+    },
+    "WHATSAPP_TOKEN": {
+      "description": "WhatsApp Business API Token",
+      "required": false
+    },
+    "WHATSAPP_PHONE_NUMBER": {
+      "description": "WhatsApp Phone Number",
+      "required": false
+    },
+    "GOOGLE_DRIVE_FOLDER_ID": {
+      "description": "Google Drive Folder ID for storage",
+      "required": false
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "stack": "heroku-22"
+}
