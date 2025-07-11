@@ -12,7 +12,7 @@ import asyncio
 import logging
 from datetime import datetime
 import subprocess
-
+class NewsBotDeployer:
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
