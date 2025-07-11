@@ -8,7 +8,7 @@ Created for Bhindi AI Platform
 import asyncio
 import logging
 import schedule
-import time
+from src.grok_monitor import GrokMonitor, notify_grok_stage_completion, validate_with_grok, grok_cross_check_stories
 from datetime import datetime, timezone
 import pytz
 
@@ -27,63 +27,63 @@ logging.basicConfig(
     handlers=[
         logging.FileHandler('chhattisgarh_news_bot.log'),
         logging.StreamHandler()
-    ]
+        self.grok_monitor = GrokMonitor()
 )
 
 logger = logging.getLogger(__name__)
 
 class ChhattisgarhNewsBot:
     def __init__(self):
-        self.scraper = NewsScraper()
+        '''Main daily workflow for news processing with Grok monitoring'''
         self.verifier = NewsVerifier()
         self.formatter = BulletinFormatter()
         self.tts_generator = TTSGenerator()
-        self.delivery_manager = DeliveryManager()
+            # Step 1: Scrape news with Grok monitoring
         self.storage_manager = StorageManager()
-        self.health_monitor = HealthMonitor()
+            await notify_grok_stage_completion('scraping', raw_news)
         
         # IST timezone
-        self.ist = pytz.timezone('Asia/Kolkata')
+            # Step 2: Verify news with Grok validation
         
-    async def daily_workflow(self):
-        '''Main daily workflow for news processing'''
-        try:
-            logger.info("Starting daily news workflow...")
+            await notify_grok_stage_completion('verification', verified_news)
             
-            # Step 1: Scrape news
-            raw_news = await self.scraper.scrape_all_sources()
-            logger.info(f"Scraped {len(raw_news)} articles")
+            # Grok cross-check for credibility
+            credibility_check = await grok_cross_check_stories(verified_news)
+            if not credibility_check.get('overall_credible', False):
+                logger.warning('Grok detected credibility issues')
             
-            # Step 2: Verify news
-            verified_news = await self.verifier.verify_news(raw_news)
-            logger.info(f"Verified {len(verified_news)} articles")
+            # Step 3: Store in Google Drive with Grok validation
             
-            # Step 3: Store in Google Drive
+            json_validation = await validate_with_grok('json', {'stories': verified_news, 'date': datetime.now(self.ist).date().strftime('%Y-%m-%d')})
+            if not json_validation.get('overall_valid', False):
+                await self.grok_monitor.send_alert('JSON validation failed', 'high')
+            
+            # Step 4: Format bulletin with Grok validation
             await self.storage_manager.store_to_drive(verified_news)
+            bulletin_validation = await validate_with_grok('bulletin', bulletin_text)
+            if not bulletin_validation.get('overall_valid', False):
+                await self.grok_monitor.send_alert('Bulletin format validation failed', 'high')
+            await notify_grok_stage_completion('formatting', bulletin_text)
             
-            # Step 4: Format bulletin
-            bulletin_text = self.formatter.format_bulletin(verified_news)
+            # Step 5: Generate MP4 with Grok validation
             
-            # Step 5: Generate MP4
-            mp4_path = await self.tts_generator.create_bulletin_video(bulletin_text)
+            if mp4_path:
+                mp3_validation = await validate_with_grok('mp3', mp4_path)
+                if not mp3_validation.get('overall_valid', False):
+                    await self.grok_monitor.send_alert('MP3 quality validation failed', 'medium')
+            await notify_grok_stage_completion('mp3_generation', mp4_path)
             
-            # Step 6: Deliver to WhatsApp/Telegram
-            await self.delivery_manager.deliver_bulletin(bulletin_text, mp4_path)
-            
-            logger.info("Daily workflow completed successfully")
-            
-        except Exception as e:
-            logger.error(f"Error in daily workflow: {e}")
+            # Step 6: Deliver to WhatsApp/Telegram with Grok monitoring
             await self.health_monitor.send_error_alert(str(e))
-
-    def schedule_tasks(self):
-        '''Schedule all daily tasks'''
-        # Scraping times: 4 AM, 12 PM, 4 PM IST
+            await notify_grok_stage_completion('delivery', 'completed')
+            
+            # Send Grok completion notification
+            await self.grok_monitor.send_alert(f'Daily workflow completed successfully - {len(verified_news)} stories delivered', 'low')
         schedule.every().day.at("04:00").do(lambda: asyncio.run(self.scraper.scrape_all_sources()))
         schedule.every().day.at("12:00").do(lambda: asyncio.run(self.scraper.scrape_all_sources()))
         schedule.every().day.at("16:00").do(lambda: asyncio.run(self.scraper.scrape_all_sources()))
-        
-        # Main workflow: 5 PM verification, 6 PM summary, 7 PM generation, 8 PM delivery
+            await self.grok_monitor.send_alert(f'Daily workflow failed: {e}', 'critical')
+            await self.grok_monitor.trigger_fallback('workflow', str(e))
         schedule.every().day.at("17:00").do(lambda: asyncio.run(self.daily_workflow()))
         
         # Health checks every hour
